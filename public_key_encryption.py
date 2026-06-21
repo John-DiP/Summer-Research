@@ -43,10 +43,17 @@ while (d < k):
 for x in range(2, k - 1):
     if ((d * x) % k == 1):
         break
-    
+
+# encrypt
+encrypt = (19 ** d) % n  
+
+# decrypt
+decrypt = (encrypt ** x) % n
 
 #print("i: " + str(i))
 print("First prime:" + str(p))
 print("second prime:" + str(q))
 print("d: " + str(d))
 print("x: " + str(x))
+print("Encrypted: " + str(encrypt))
+print ("Decrypted: " + str(decrypt))
