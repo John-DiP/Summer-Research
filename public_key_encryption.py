@@ -1,59 +1,55 @@
 # Code for public key encryption using RSA
 
 import math
+import time
 
-p = int(input("Enter the first prime number: "))
-q = int(input("Enter the second prime number: "))
-
-d = 2
-
-n = p * q
-k = (p - 1) * (q - 1)
-
-
-while (d < k):
-    if (math.gcd(d, k) == 1):
-        break
-    else:
-        d +=1
+def get_d(k):
+    d = k - 1
+    
+    while d > 1:
+        if math.gcd(d, k) == 1:
+            return d
+        else:
+            d -= 1
 
 
-#   Step 1: it needs to calculate k=(p-1)*(q-1) – so it will have to factor p*q as p and q the two primes that make it up. 
-#   A stupid way to do this is to do a while loop i from 2 to n-1 and take n mod i 
-#   if that = 0 then i divides n and you have found a prime p after you find one you can just divide to get the other prime q. 
+def main():
+    p = int(input("Enter the first prime number: "))
+    q = int(input("Enter the second prime number: "))
 
+    n = p * q
+    k = (p - 1) * (q - 1)
 
-#i = 2
+    d = get_d(k)
 
-# still need to work on this
-#while (i < (n-1)):
-    #if (n % i) == 0:
-        #p = i
-        #q = n / p
-        #break
-    #i += 1
+    #   Find x, again with d you can run through all i from 2 to k-1 d*x=1 mod k. 
 
+    #	Once you found x you can decrypt the message.  
 
-#   Find x, again with d you can run through all i from 2 to k-1 d*x=1 mod k. 
+    #   Equation: dx ≡ 1 mod p
 
-#	Once you found x you can decrypt the message.  
+    for x in range(2, k - 1):
+        if ((d * x) % k == 1):
+            break
 
-# Equation: dx ≡ 1 mod p
+    # encrypt
+    encrypt = (19 ** d) % n  
 
-for x in range(2, k - 1):
-    if ((d * x) % k == 1):
-        break
+    start_time = time.perf_counter()
 
-# encrypt
-encrypt = (19 ** d) % n  
+    # decrypt
+    decrypt = (encrypt ** x) % n
 
-# decrypt
-decrypt = (encrypt ** x) % n
+    end_time = time.perf_counter()
 
-#print("i: " + str(i))
-print("First prime:" + str(p))
-print("second prime:" + str(q))
-print("d: " + str(d))
-print("x: " + str(x))
-print("Encrypted: " + str(encrypt))
-print ("Decrypted: " + str(decrypt))
+    time_in_seconds = end_time - start_time
+
+    print("First prime:" + str(p))
+    print("second prime:" + str(q))
+    print("d: " + str(d))
+    print("x: " + str(x))
+    print("Encrypted: " + str(encrypt))
+    print("Decrypted: " + str(decrypt))
+    print("Seconds: " +str(time_in_seconds))
+
+main()
